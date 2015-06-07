@@ -23,7 +23,7 @@ Each revision of phase 1~3 is included its phase directory.
 * launching binary file : Phase 4/binary/launch.bat (for windows)
 * Requirement : JDK 1.7
 * complexity analysis : Phase 4/overall_analysis.csv
---(analysis metrics are explained in Phase 4/analysis_readme.txt)
+  *(analysis metrics are explained in Phase 4/analysis_readme.txt)
 * User manual : refer Phase 4/EndUserManual.docx
 * project directory : Phase 4/SafeHome_device
 
