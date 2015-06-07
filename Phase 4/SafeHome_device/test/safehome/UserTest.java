@@ -23,7 +23,7 @@ public class UserTest {
         User u = new User();
         Assert.assertFalse(u.loginControlPanel("1234"));
         Assert.assertFalse(u.loginControlPanel("0987654"));
-        Assert.assertFalse(u.loginControlPanel("0987a"));
+        Assert.assertFalse(u.loginControlPanel("098a"));
         Assert.assertTrue(u.loginControlPanel("0987"));
     }
 

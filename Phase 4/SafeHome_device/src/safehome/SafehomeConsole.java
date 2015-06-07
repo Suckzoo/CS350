@@ -126,10 +126,10 @@ public class SafehomeConsole implements Runnable {
     public void resolvePanic() {
         overridePanic = false;
         for (int i = 0; i < MAX_SENSOR; i++) {
-            if (stateWindoorSensor[i] == true && sensorTest.readWindoorSensor(i)) {
+            if (stateWindoorSensor[i] == true) {
                 disarmWindoorSensor(i);
             }
-            if (stateMotionDetector[i] == true && sensorTest.readMotionDetector(i)) {
+            if (stateMotionDetector[i] == true) {
                 disarmMotionDetector(i);
             }
         }
@@ -138,6 +138,7 @@ public class SafehomeConsole implements Runnable {
 
     public synchronized boolean checkState() {
         while (state == SUSPENDED) {
+            System.out.println("suspended!");
             try {
                 wait();
             } catch (Exception e) {
