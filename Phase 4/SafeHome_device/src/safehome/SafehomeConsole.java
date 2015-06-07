@@ -94,7 +94,7 @@ public class SafehomeConsole implements Runnable {
         overridePanic = false;
         state = SUSPENDED;
     }
-    public void manualPanic()
+    public synchronized void manualPanic()
     {
         overridePanic = true;
         isOperating = true;
@@ -106,7 +106,7 @@ public class SafehomeConsole implements Runnable {
             t.start();
         } else
         {
-            if(!t.isAlive()) notify();
+            notify();
         }
     }
     public void panic() {
@@ -150,7 +150,7 @@ public class SafehomeConsole implements Runnable {
          int cnt = 0;
          try {
              while (true) {
-                 System.out.print("Thread operating..." + Integer.toString(cnt++));
+                 //System.out.print("Thread operating..." + Integer.toString(cnt++));
                  for (i = 0; i < MAX_SENSOR; i++) {
                      if(overridePanic) {
                          panic();
