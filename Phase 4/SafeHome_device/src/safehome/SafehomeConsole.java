@@ -53,13 +53,13 @@ public class SafehomeConsole implements Runnable {
         {
             if(stateMotionDetector[i] == true && sensorTest.readMotionDetector(i))
             {
-                JOptionPane.showMessageDialog(null, "Not ready: MotionDetector " + Integer.toString(i), "arm failed", JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Not ready: MotionDetector " + Integer.toString(i+1), "arm failed", JOptionPane.PLAIN_MESSAGE);
                 return false;
                 //failed
             }
             if(stateWindoorSensor[i] == true && sensorTest.readWindoorSensor(i))
             {
-                JOptionPane.showMessageDialog(null, "Not ready: WindoorSensor " + Integer.toString(i), "arm failed", JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Not ready: WindoorSensor " + Integer.toString(i+1), "arm failed", JOptionPane.PLAIN_MESSAGE);
                 return false;
                 //failed;
             }
@@ -76,9 +76,10 @@ public class SafehomeConsole implements Runnable {
     public void disarmSystem() {
         if (!isOperating) return;
         isOperating = false;
+        state = SUSPENDED;
     }
     public void panic() {
-
+        System.out.println("panic!");
     }
     public synchronized boolean checkState() {
         while (state == SUSPENDED) {

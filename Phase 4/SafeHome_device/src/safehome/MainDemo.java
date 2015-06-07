@@ -46,10 +46,9 @@ public class MainDemo extends JFrame implements ActionListener
 	// instance of three test cases
 
 
-	private ControlPanel controlPanel;
+	public static ControlPanel controlPanel;
 	private UserInterface userInterface;
 	private SensorTest sensorTest;
-	private CameraTest cameraTest;
 	private LoginInterface loginInterface;
 	public static SafehomeConsole safehomeConsole;
 	public static User user;
@@ -92,7 +91,6 @@ public class MainDemo extends JFrame implements ActionListener
 		super("Hardware Device Demo");
 		controlPanel = new ControlPanel();
 		sensorTest = new SensorTest();
-		cameraTest = new CameraTest();
 		loginInterface = new LoginInterface();
 		user = new User();
 		userInterface = new UserInterface();
@@ -340,6 +338,17 @@ class ControlPanel extends DeviceControlPanelAbstract
 		setPoweredLED(false);
 		setDisplayShortMessage1("    ");
 		setDisplayShortMessage2("    ");
+		pwLength = -1;
+		nextStatus = STATUS.DO_NOTHING;
+	}
+
+	void PowerOn() {
+		if(currentStatus != STATUS.POWER_OFF) return;
+		currentStatus = STATUS.POWER_ON;
+		setSecurityZoneNumber(1);
+		setPoweredLED(true);
+		setDisplayShortMessage1("    Safehome is ready");
+		setDisplayShortMessage2(" ");
 	}
 
 	void Reset()
@@ -351,18 +360,33 @@ class ControlPanel extends DeviceControlPanelAbstract
 		setPoweredLED(true);
 		setDisplayShortMessage1("    Safehome is ready");
 		setDisplayShortMessage2(" ");
+		pwLength = -1;
+		nextStatus = STATUS.DO_NOTHING;
 	}
 
-	void Arm()
+	public void Arm()
 	{
+		pwLength = -1;
+		nextStatus = STATUS.DO_NOTHING;
+		if(!MainDemo.safehomeConsole.armSystem())
+		{
+			currentStatus = STATUS.POWER_ON;
+			setDisplayNotReady(true);
+			setDisplayStay(false);
+			setDisplayAway(false);
+			setArmedLED(false);
+			setDisplayShortMessage1("   Not ready");
+			setDisplayShortMessage2("   Check sensor status");
+			return;
+		}
 		setDisplayShortMessage1("    Away mode activated");
 		setDisplayShortMessage2("    Sensor/Detector armed");
 		if (currentStatus == STATUS.ARM) return;
 		currentStatus = STATUS.ARM;
 		setDisplayStay(false);
+		setDisplayNotReady(false);
 		setDisplayAway(true);
 		setArmedLED(true);
-		MainDemo.safehomeConsole.armSystem();
 		//if success:
 		//else
 		//not ready;
@@ -370,12 +394,15 @@ class ControlPanel extends DeviceControlPanelAbstract
 
 	void Disarm()
 	{
+		pwLength = -1;
+		nextStatus = STATUS.DO_NOTHING;
 		setDisplayShortMessage1("    Stay mode activated");
 		setDisplayShortMessage2("    Sensor/Detector disarmed");
 		if(currentStatus == STATUS.DISARM) return;
 		currentStatus = STATUS.DISARM;
 		setDisplayAway(false);
 		setDisplayStay(true);
+		setDisplayNotReady(false);
 		setArmedLED(false);
 		MainDemo.safehomeConsole.disarmSystem();
 	}
@@ -413,11 +440,7 @@ class ControlPanel extends DeviceControlPanelAbstract
 	{
 		// example running (key is active)
 		if(currentStatus == STATUS.POWER_OFF) {
-			currentStatus = STATUS.POWER_ON;
-			setSecurityZoneNumber(1);
-			setPoweredLED(true);
-			setDisplayShortMessage1("    Safehome is ready");
-			setDisplayShortMessage2(" ");
+			PowerOn();
 		} else {
 			if(pwLength != -1) {
                 password[pwLength++] = 1;
@@ -1580,10 +1603,11 @@ class CameraTest extends JFrame implements ActionListener
 	 * <p>
 	 * Post-condition: The layout of Camera test frame is made.
 	 */
-	public CameraTest()
+	public CameraTest(int id)
 	{
 		super("Camera Example");
-		cameraView = new CameraView();
+		cameraView = new CameraView(id);
+		//cameraView = view;
 		setSize(455, 570);
 		getContentPane().setLayout(null);
 		setResizable(false);
@@ -1751,6 +1775,13 @@ class CameraView extends Component implements Runnable
 	public CameraView(int cameraID)
 	{
 		camera.setID(cameraID);
+
+		Thread th = new Thread(this);
+		th.start();
+	}
+
+	public CameraView(CameraView another) {
+		this.camera = another.camera;
 
 		Thread th = new Thread(this);
 		th.start();
