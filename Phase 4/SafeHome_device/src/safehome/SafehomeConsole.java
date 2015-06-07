@@ -1,6 +1,8 @@
 package safehome;
 
 import javax.swing.*;
+import java.io.*;
+import sun.audio.*;
 
 /*
 ** Created by suckzoo on 2015-06-07.
@@ -78,8 +80,31 @@ public class SafehomeConsole implements Runnable {
         isOperating = false;
     }
     public void panic() {
-
+        try
+        {
+            // get the sound file as a resource out of my jar file;
+            // the sound file must be in the same directory as this class file
+            InputStream inputStream = getClass().getResourceAsStream("ALARM.WAV");
+            AudioStream audioStream = new AudioStream(inputStream);
+            AudioPlayer.player.start(audioStream);
+            System.out.println("panic!!!!!!");
+        }
+        catch (Exception e)
+        {
+        }
     }
+    public void resolvePanic() {
+        for (i = 0; i < MAX_SENSOR; i++) {
+            if (stateWindoorSensor[i] == true && sensorTest.readWindoorSensor(i)) {
+                disarmWindoorSensor(i);
+            }
+            if (stateMotionDetector[i] == true && sensorTest.readMotionDetector(i)) {
+                disarmMotionDetector(i);
+            }
+        }
+    }
+
+
     public synchronized boolean checkState() {
         while (state == SUSPENDED) {
             try {

@@ -378,6 +378,7 @@ class ControlPanel extends DeviceControlPanelAbstract
 		setDisplayStay(true);
 		setArmedLED(false);
 		MainDemo.safehomeConsole.disarmSystem();
+		//MainDemo.safehomeConsole.resolvePanic();
 	}
 
 	/*
