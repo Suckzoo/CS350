@@ -26,9 +26,9 @@ public class User {
     }
     public boolean changeInterfacePassword(String originalPassword, String newPassword)
     {
-        if(newPassword.equals(PW) && newPassword.length()>=8)
+        if(originalPassword.equals(PW) && newPassword.length()>=8)
         {
-            PW = newPassword;
+            PW = new String(newPassword);
             return true;
         }
         return false;
@@ -46,7 +46,7 @@ public class User {
         }
         if(originalPassword.equals(controlPW))
         {
-            controlPW = newPassword;
+            controlPW = new String(newPassword);
             return true;
         }
         return false;

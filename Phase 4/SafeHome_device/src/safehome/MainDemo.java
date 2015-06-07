@@ -358,6 +358,8 @@ class ControlPanel extends DeviceControlPanelAbstract
 		setDisplayShortMessage2(" ");
 		pwLength = -1;
 		nextStatus = STATUS.DO_NOTHING;
+		MainDemo.safehomeConsole.disarmSystem();
+		MainDemo.safehomeConsole.resolvePanic();
 	}
 
 	public void Arm()
@@ -377,7 +379,6 @@ class ControlPanel extends DeviceControlPanelAbstract
 		}
 		setDisplayShortMessage1("    Away mode activated");
 		setDisplayShortMessage2("    Sensor/Detector armed");
-		if (currentStatus == STATUS.ARM) return;
 		currentStatus = STATUS.ARM;
 		setDisplayStay(false);
 		setDisplayNotReady(false);
@@ -510,6 +511,7 @@ class ControlPanel extends DeviceControlPanelAbstract
 	{
 		// example running (key is active)
 		if(currentStatus == STATUS.POWER_OFF) return;
+		if(currentStatus == STATUS.ARM) return;
 		if(pwLength == -1) {
 			setDisplayShortMessage1("    Shutdown system");
 			setDisplayShortMessage2("    Input password");
@@ -1103,7 +1105,14 @@ class ControlPanel extends DeviceControlPanelAbstract
 		setSecurityZoneNumber(10);
 		setDisplayShortMessage1("    key * pressed");
 		setDisplayShortMessage2("    Panic Button");
-		// To do
+		// To d
+		currentStatus = STATUS.ARM;
+		setDisplayStay(false);
+		setDisplayNotReady(false);
+		setDisplayAway(true);
+		setArmedLED(true);
+		pwLength = -1;
+		MainDemo.safehomeConsole.manualPanic();
 		//
 	}
 
@@ -1218,8 +1227,13 @@ class ControlPanel extends DeviceControlPanelAbstract
 		setSecurityZoneNumber(12);
 		setDisplayShortMessage1("    key # pressed");
 		setDisplayShortMessage2("    Panic Button");
-		// To do
-		//
+		currentStatus = STATUS.ARM;
+		setDisplayStay(false);
+		setDisplayNotReady(false);
+		setDisplayAway(true);
+		setArmedLED(true);
+		MainDemo.safehomeConsole.manualPanic();
+		pwLength = -1;
 	}
 
 	/*
@@ -1512,26 +1526,32 @@ class SensorTest extends JFrame implements ActionListener
 
 	public void armWindoorSensor(int id)
 	{
+		if(id>=MAX_SENSOR) return;
 		winDoorSensors[id].enable();
 	}
 	public void disarmWindoorSensor(int id)
 	{
+		if(id>=MAX_SENSOR) return;
 		winDoorSensors[id].disable();
 	}
 	public void armMotionDetector(int id)
 	{
+		if(id>=MAX_SENSOR) return;
 		motionDetectors[id].enable();
 	}
 	public void disarmMotionDetector(int id)
 	{
+		if(id>=MAX_SENSOR) return;
 		motionDetectors[id].disable();
 	}
 	public boolean readWindoorSensor(int id)
 	{
+		if(id>=MAX_SENSOR) return false;
 		return winDoorSensors[id].read();
 	}
 	public boolean readMotionDetector(int id)
 	{
+		if(id>=MAX_SENSOR) return false;
 		return motionDetectors[id].read();
 	}
 	
