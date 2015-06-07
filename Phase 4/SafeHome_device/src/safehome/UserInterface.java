@@ -178,6 +178,18 @@ public class UserInterface extends JFrame implements ActionListener
 		}
 		if(ev.getActionCommand().equals("Activate"))
 		{
+			for(int i=1;i<=5;i++) {
+				if (checkBoxList.get(2 * i - 2).isSelected()) {
+					MainDemo.safehomeConsole.armWindoorSensor(i - 1);
+				} else {
+					MainDemo.safehomeConsole.disarmWindoorSensor(i - 1);
+				}
+				if (checkBoxList.get(2 * i - 1).isSelected()) {
+					MainDemo.safehomeConsole.armMotionDetector(i - 1);
+				} else {
+					MainDemo.safehomeConsole.disarmMotionDetector(i - 1);
+				}
+			}
 			MainDemo.controlPanel.PowerOn();
 			MainDemo.controlPanel.Arm();
 			//MainDemo.safehomeConsole.armSystem();

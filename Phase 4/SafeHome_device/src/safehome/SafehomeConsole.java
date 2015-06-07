@@ -72,6 +72,9 @@ public class SafehomeConsole implements Runnable {
         {
             t = new Thread(this);
             t.start();
+        } else
+        {
+            notify();
         }
         return true;
     }
@@ -117,19 +120,24 @@ public class SafehomeConsole implements Runnable {
     }
     public void run() {
          int i;
-         while (true) {
-             for (i = 0; i < MAX_SENSOR; i++) {
-                 if (stateWindoorSensor[i] == true && sensorTest.readWindoorSensor(i)) {
-                     panic();
+         int cnt = 0;
+         try {
+             while (true) {
+                 System.out.print("Thread operating..." + Integer.toString(cnt++));
+                 for (i = 0; i < MAX_SENSOR; i++) {
+                     if (stateWindoorSensor[i] == true && sensorTest.readWindoorSensor(i)) {
+                         panic();
+                     }
+                     if (stateMotionDetector[i] == true && sensorTest.readMotionDetector(i)) {
+                         panic();
+                     }
                  }
-                 if (stateMotionDetector[i] == true && sensorTest.readMotionDetector(i)) {
-                     panic();
+                 if (checkState()) {
+                     break;
                  }
+                 Thread.sleep(1000);
              }
-             if(checkState())
-             {
-                 break;
-             }
+         } catch(InterruptedException e) {
          }
      }
 }
