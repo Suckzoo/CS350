@@ -405,6 +405,7 @@ class ControlPanel extends DeviceControlPanelAbstract
 		setDisplayNotReady(false);
 		setArmedLED(false);
 		MainDemo.safehomeConsole.disarmSystem();
+		MainDemo.safehomeConsole.resolvePanic();
 	}
 
 	/*
@@ -1732,7 +1733,7 @@ class CameraView extends Component implements Runnable
 {
 	// Real instance of the Camera
 	DeviceCamera camera = new DeviceCamera();
-	
+
 	/*
 	 * NAME : CameraView (constructor)
 	 * DESCRIPTION
