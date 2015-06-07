@@ -310,10 +310,7 @@ class ControlPanel extends DeviceControlPanelAbstract
 		POWER_OFF,
 		RESET,
 		ARM,
-		DISARM,
-		CODE_CHECK,
-		CODE_INPUT,
-		CODE_CONFIRM
+		DISARM
 	};
 	STATUS currentStatus, nextStatus;
 	public ControlPanel()
@@ -330,7 +327,6 @@ class ControlPanel extends DeviceControlPanelAbstract
 	void PowerOff()
 	{
 		currentStatus = STATUS.POWER_OFF;
-		setSecurityZoneNumber(2);
 		setDisplayAway(false);
 		setDisplayStay(false);
 		setDisplayNotReady(false);
@@ -1033,12 +1029,7 @@ class ControlPanel extends DeviceControlPanelAbstract
 	public void button9()
 	{
 		if(currentStatus == STATUS.POWER_OFF) return;
-		if(pwLength == -1) {
-			setDisplayShortMessage1("    Changing password");
-			setDisplayShortMessage2("    Input current password");
-			pwLength = 0;
-			nextStatus = STATUS.CODE_CHECK;
-		} else {
+		if(pwLength != -1) {
 			password[pwLength++] = 9;
 			if(pwLength == 4)
 			{
