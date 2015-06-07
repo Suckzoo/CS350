@@ -91,7 +91,7 @@ public class SafehomeConsole implements Runnable {
             InputStream inputStream = getClass().getResourceAsStream("ALARM.WAV");
             AudioStream audioStream = new AudioStream(inputStream);
             AudioPlayer.player.start(audioStream);
-            System.out.println("panic!!!!!!");
+            //System.out.println("panic!!!!!!");
         }
         catch (Exception e)
         {

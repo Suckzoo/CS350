@@ -161,7 +161,7 @@ public class UserInterface extends JFrame implements ActionListener
 					for(int i=0;i<checkboxes.size();i++)
 					{
 						checkboxes.get(i).setSelected(true);
-						System.out.println(checkboxes.get(i).getActionCommand());
+						//System.out.println(checkboxes.get(i).getActionCommand());
 						if(checkboxes.get(i).getActionCommand().contains("Windoor"))
 						{
                             int sensorNumber = Integer.parseInt(checkboxes.get(i).getActionCommand().substring(14));
