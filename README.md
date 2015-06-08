@@ -3,7 +3,7 @@
 ## Authors: Seokju Hong, Youngseok Kim
 
 ### What is SafeHome Project?
-To carry out real world project, professor [Moonzoo Kim](http://swtv.kaist.ac.kr/members/moonzoo_kim/moonzoo-kims-home-page, profile) created virtual project by
+To carry out real world project, professor [Moonzoo Kim](http://swtv.kaist.ac.kr/members/moonzoo_kim/moonzoo-kims-home-page) created virtual project by
 refering textbook "Software Engineering: A Practitioner's Approach 8/e".
 This project was held in CS350(Introduction to Software Engineering) 2015 spring class, and this repository contains achievements of team 2(Seokju Hong, Youngseok Kim).
 

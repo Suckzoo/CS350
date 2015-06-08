@@ -13,17 +13,24 @@ public class UserTest {
     @Test
     public void testLoginInterface() throws Exception {
         User u = new User();
+        //wrong id
         Assert.assertFalse(u.loginInterface("team1", "12345678"));
+        //wrong pw
         Assert.assertFalse(u.loginInterface("team2", "12345679"));
+        //correct info
         Assert.assertTrue(u.loginInterface("team2", "12345678"));
     }
 
     @Test
     public void testLoginControlPanel() throws Exception {
         User u = new User();
+        //wrong pw
         Assert.assertFalse(u.loginControlPanel("1234"));
+        //invalid pw, but contains original pw as substring
         Assert.assertFalse(u.loginControlPanel("0987654"));
+        //invalid pw(contains letter)
         Assert.assertFalse(u.loginControlPanel("098a"));
+        //correct pw
         Assert.assertTrue(u.loginControlPanel("0987"));
     }
 

@@ -2,11 +2,6 @@ package safehome;
 
 import org.junit.Assert;
 import org.junit.Test;
-import safehome.device.DeviceMotionDetector;
-import safehome.device.DeviceWinDoorSensor;
-import sun.management.Sensor;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by suckzoo on 2015-06-08.
@@ -109,6 +104,7 @@ public class SensorTestTest {
         {
             if(st.motionDetectors[i].test()) cnt++;
         }
+        //armed sensor = 2
         Assert.assertEquals(2, cnt);
         //disarm before armed
         st.disarmMotionDetector(4);
@@ -122,19 +118,28 @@ public class SensorTestTest {
         {
             if(st.motionDetectors[i].test()) cnt++;
         }
+        //valid disarm = 1
         Assert.assertEquals(1, cnt);
     }
 
     @Test
     public void testReadWindoorSensor() throws Exception {
         SensorTest st = new SensorTest();
+        //intrude
         st.winDoorSensors[0].intrude();
+        //but not detected because it is not armed yet.
         Assert.assertFalse(st.readWindoorSensor(0));
+        //so, let's arm it.
         st.armWindoorSensor(0);
+        //now, we can read value.
         Assert.assertTrue(st.readWindoorSensor(0));
+        //if we release it,
         st.winDoorSensors[0].release();
+        //we cannot detect it.
         Assert.assertFalse(st.readWindoorSensor(0));
+        //not-mentioned sensors?
         Assert.assertFalse(st.readWindoorSensor(1));
+        //invalid sensors?
         Assert.assertFalse(st.readWindoorSensor(999));
     }
 
