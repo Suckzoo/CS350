@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="SafeHome_device:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SafeHome_device_jar</output-path>
+    <root id="archive" name="SafeHome_device.jar">
+      <element id="module-output" name="SafeHome_device" />
+    </root>
+  </artifact>
+</component>
